@@ -1,0 +1,37 @@
+# NVIDIA Jetson Xavier NX - Pinned Requirements
+# JetPack 5.0.2 (L4T R35.1.0)
+# Python 3.8.10
+# Last validated: 2025-10-20
+
+# PyTorch (NVIDIA pre-built for JetPack 5.0.2)
+# Install from wheel: torch-1.12.0a0+2c916ef.nv22.3-cp38-cp38-linux_aarch64.whl
+# Source: https://developer.download.nvidia.com/compute/redist/jp/v502/pytorch/
+torch==1.12.0a0+2c916ef.nv22.3
+
+# Ultralytics YOLOv8
+ultralytics==8.0.196
+
+# OpenCV (system package recommended for CUDA support)
+# Install via: sudo apt-get install python3-opencv
+# Version: 4.5.4 (comes with JetPack 5.0.2)
+# If pip install needed: opencv-python>=4.5.0
+
+# Optional: python-vlc (not used in current implementation)
+# python-vlc>=3.0.0
+
+# Core dependencies (automatically installed with ultralytics)
+# - numpy>=1.18.5
+# - pillow>=7.1.2
+# - pyyaml>=5.3.1
+# - requests>=2.23.0
+# - scipy>=1.4.1
+# - torch>=1.7.0
+# - torchvision>=0.8.1
+# - tqdm>=4.64.0
+# - pandas>=1.1.4
+# - seaborn>=0.11.0
+
+# System packages required:
+# - CUDA 11.4.14 (included in JetPack 5.0.2)
+# - cuDNN 8.4.1 (included in JetPack 5.0.2)
+# - TensorRT 8.4.1 (included in JetPack 5.0.2)

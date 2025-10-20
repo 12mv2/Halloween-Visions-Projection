@@ -6,7 +6,12 @@ Real-time hand detection system with video projection for Halloween displays.
 
 ## Quick Start
 
-### Requirements Installation
+### Platform-Specific Setup
+
+**NVIDIA Jetson Xavier NX:**
+See [envs/xavier/README.md](envs/xavier/README.md) for complete Xavier setup guide.
+
+**macOS/Linux/Windows Development:**
 
 **Install Git LFS** (required for model and video files):
 ```bash
@@ -168,6 +173,31 @@ git lfs pull
 - macOS: Tested on Darwin 24.6.0
 - Linux: Tested on Jetson Xavier NX (JetPack 5.0.2)
 - Windows: Standard Python 3.8+ environment
+
+**Platform-Specific Guides:**
+- Xavier NX Deployment: [envs/xavier/README.md](envs/xavier/README.md)
+- Xavier SSH Setup: [envs/xavier/SSH_SETUP.md](envs/xavier/SSH_SETUP.md)
+
+---
+
+## Project Structure
+
+```
+Halloween-Visions-Projection/
+├── simple_projection.py          # Main application
+├── test_gpu_validation.py        # GPU validation utility
+├── test_camera.py                # Camera testing
+├── Colin1.pt                     # Production model
+├── quinn_arms_up.pt              # Alternative model
+├── videos/                       # Video assets
+├── envs/                         # Platform-specific environments
+│   └── xavier/                   # Xavier NX deployment files
+│       ├── README.md             # Xavier setup guide
+│       ├── SSH_SETUP.md          # SSH configuration
+│       ├── requirements.txt      # Pinned dependencies
+│       └── install.sh            # Setup script
+└── [documentation files]
+```
 
 ---
 
