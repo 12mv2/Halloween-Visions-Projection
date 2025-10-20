@@ -389,17 +389,8 @@ Halloween-Visions-Projection/
 ### Project Documentation
 - **System Specs:** `~/docs/SYSTEM_SPECIFICATIONS_PERFORMANCE_REPORT.md`
 - **Performance Guide:** `~/docs/PERFORMANCE_ENHANCEMENT_RECOMMENDATIONS.md`
-- **SSH Setup:** `~/docs/setup/B10_Xavier_SSH_Setup_Guide.md`
+- **Technical Deep Dive:** `~/docs/TECHNICAL_DEEP_DIVE.md`
 - **Project Summary:** `~/docs/B10_PROJECT_COMPLETE_SUMMARY.md`
-
-### Build Logs
-- `~/docs/build_logs/B10-INFER-GPU-VALIDATE_status_report.md`
-- `~/docs/build_logs/B10-PROJ-INFER-REFIT_completion_report.md`
-- `~/docs/build_logs/B10-INFER-PIL-REMOVAL_completion_report.md`
-
-### Run Logs
-- `~/docs/run_logs/B10-LIVE-CAMERA-VALIDATION_report.md`
-- `~/docs/run_logs/B10-FINAL-DEPLOYMENT-READY_report.md`
 
 ### External Resources
 - **JetPack 5.0.2 Docs:** https://developer.nvidia.com/embedded/jetpack
