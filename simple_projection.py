@@ -78,7 +78,7 @@ class SimpleProjectionController:
         self.sleep_frame_count = 0
         self.scare_frame_count = 0
 
-        logging.info("✅ Videos loaded successfully")
+        logging.info("Videos loaded successfully")
         logging.info(f"Sleep video: {video_sleep_path} ({self.sleep_fps:.1f} FPS)")
         logging.info(f"Scare video: {video_scare_path} ({self.scare_fps:.1f} FPS)")
 
@@ -103,26 +103,26 @@ class SimpleProjectionController:
 
         if class_name == "hand" and confidence >= self.confidence_threshold:
             if self.state != "scare":
-                logging.info(f"🖐️  HAND DETECTED! Confidence: {confidence:.1%}")
-                logging.info("   → Switching to SCARE state")
+                logging.info(f"HAND DETECTED! Confidence: {confidence:.1%}")
+                logging.info("Switching to SCARE state")
                 self.state = "scare"
                 self.last_trigger = current_time
 
         # Return to idle after timeout
         if self.state == "scare" and current_time - self.last_trigger > self.scare_duration:
-            logging.info("   → SCARE timeout, returning to IDLE")
+            logging.info("SCARE timeout, returning to IDLE")
             self.state = "idle"
 
     def toggle_debug_mode(self):
         self.debug_mode = not self.debug_mode
         mode = "DEBUG" if self.debug_mode else "PROJECTION"
-        logging.info(f"🔄 Switched to {mode} mode")
+        logging.info(f"Switched to {mode} mode")
         return self.debug_mode
 
     def toggle_production_mode(self):
         self.production_mode = not self.production_mode
         mode = "PRODUCTION" if self.production_mode else "NORMAL"
-        logging.info(f"🔄 Switched to {mode} display mode")
+        logging.info(f"Switched to {mode} display mode")
         return self.production_mode
 
     def create_debug_display(self, camera_frame, video_frame, class_name, confidence, model_name="Colin1.pt"):
@@ -216,12 +216,12 @@ class SimpleProjectionController:
 
         if has_nan:
             self.nan_count += 1
-            logger.warning(f"⚠️  NaN detected in probs (total NaN count: {self.nan_count})")
+            logger.warning(f"NaN detected in probs (total NaN count: {self.nan_count})")
 
             # Abort if too many NaNs
             if self.nan_count > 5 and self.total_frames < 1000:
-                logger.error(f"❌ Exceeded NaN threshold: {self.nan_count} NaNs in {self.total_frames} frames")
-                logger.error("   Aborting due to excessive NaN outputs - GPU inference may be failing")
+                logger.error(f"Exceeded NaN threshold: {self.nan_count} NaNs in {self.total_frames} frames")
+                logger.error("Aborting due to excessive NaN outputs - GPU inference may be failing")
                 raise RuntimeError("Excessive NaN outputs detected - check GPU inference path")
 
         return has_nan, probs_tensor.cpu().numpy() if isinstance(probs_tensor, torch.Tensor) else probs_tensor
@@ -247,12 +247,12 @@ class SimpleProjectionController:
             std_fps = std_duration / (mean_duration ** 2) if mean_duration > 0 else 0
 
             logger.info("=" * 60)
-            logger.info("📊 B10-INFER-GPU-VALIDATE Benchmark Results (300 frames)")
+            logger.info("B10-INFER-GPU-VALIDATE Benchmark Results (300 frames)")
             logger.info(f"   Warmup frames skipped: {self.warmup_frames}")
-            logger.info(f"   Mean FPS: {mean_fps:.2f} ± {std_fps:.2f}")
+            logger.info(f"   Mean FPS: {mean_fps:.2f} +/- {std_fps:.2f}")
             logger.info(f"   Mean frame time: {mean_duration*1000:.2f} ms")
             logger.info(f"   NaN occurrences: {self.nan_count}")
-            logger.info(f"   GPU inference: {'✅ PASS' if mean_fps >= 15 else '⚠️  BELOW TARGET'}")
+            logger.info(f"   GPU inference: {'PASS' if mean_fps >= 15 else 'BELOW TARGET'}")
             logger.info("=" * 60)
 
 
@@ -267,20 +267,20 @@ def main():
     args = parser.parse_args()
 
     logging.info("=" * 60)
-    logging.info("🎃 Simple Halloween Hand Detection Projection")
+    logging.info("Simple Halloween Hand Detection Projection")
     logging.info("=" * 60)
 
     # B10-INFER-GPU-VALIDATE Objective 1: Confirm GPU Execution
     cuda_available = torch.cuda.is_available()
-    logger.info(f"🔍 CUDA available: {cuda_available}")
-    
+    logger.info(f"CUDA available: {cuda_available}")
+
     if cuda_available:
-        logger.info(f"🟢 GPU enabled: {torch.cuda.get_device_name(0)}")
+        logger.info(f"GPU enabled: {torch.cuda.get_device_name(0)}")
         logger.info(f"   CUDA version: {torch.version.cuda}")
         logger.info(f"   PyTorch version: {torch.__version__}")
         device = "cuda"
     else:
-        logger.warning("⚠️  CUDA not available - falling back to CPU (NaNs may occur)")
+        logger.warning("CUDA not available - falling back to CPU (NaNs may occur)")
         device = "cpu"
 
     try:
@@ -290,9 +290,9 @@ def main():
         # Force model to GPU if available
         if cuda_available:
             model.to(device)
-            logger.info(f"✅ Model moved to device: {device}")
-        
-        logging.info(f"✓ Model loaded: {model.names}")
+            logger.info(f"Model moved to device: {device}")
+
+        logging.info(f"Model loaded: {model.names}")
     except Exception as e:
         logging.error(f"Failed to load YOLO model: {e}")
         return 1
@@ -314,9 +314,9 @@ def main():
         logging.error(f"Could not open camera: {source}")
         return 1
 
-    logging.info(f"✅ Camera opened: {args.source}")
+    logging.info(f"Camera opened: {args.source}")
     logging.info(f"Confidence threshold: {args.conf:.0%}")
-    logging.info("🎮 Controls:")
+    logging.info("Controls:")
     logging.info("  D = Toggle Debug/Projection mode")
     logging.info("  P = Toggle Production mode (grey border fix)")
     logging.info("  F = Toggle fullscreen")
@@ -359,10 +359,10 @@ def main():
             if not controller.device_verified:
                 controller.device_verified = True
                 actual_device = probs.device
-                logger.info(f"✅ First inference device verified: {actual_device}")
+                logger.info(f"First inference device verified: {actual_device}")
                 logger.info(f"   Tensor shape: {probs.shape}")
                 if str(actual_device) != device and cuda_available:
-                    logger.warning(f"⚠️  Expected {device} but got {actual_device}")
+                    logger.warning(f"Expected {device} but got {actual_device}")
 
             # B10-INFER-GPU-VALIDATE Objective 2: NaN detection
             has_nan, probs_np = controller.check_nan_in_probs(probs)
@@ -384,7 +384,7 @@ def main():
                 controller.frame_count = 0
             controller.frame_count += 1
             if controller.frame_count % 30 == 0:
-                logging.info(f"🔍 Classification: {class_name} ({confidence:.1%})")
+                logging.info(f"Classification: {class_name} ({confidence:.1%})")
 
             controller.process_hand_detection(class_name, confidence)
             
@@ -412,10 +412,10 @@ def main():
                 current_state = cv2.getWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN)
                 if current_state == cv2.WINDOW_FULLSCREEN:
                     cv2.setWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_NORMAL)
-                    logging.info("🔄 Switched to windowed mode")
+                    logging.info("Switched to windowed mode")
                 else:
                     cv2.setWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-                    logging.info("🔄 Switched to fullscreen mode")
+                    logging.info("Switched to fullscreen mode")
 
     except KeyboardInterrupt:
         logging.info("Shutting down...")
@@ -423,7 +423,7 @@ def main():
     finally:
         # B10-INFER-GPU-VALIDATE: Final summary
         logger.info("=" * 60)
-        logger.info("📋 Final Session Summary")
+        logger.info("Final Session Summary")
         logger.info(f"   Total frames processed: {controller.total_frames}")
         logger.info(f"   Total NaN occurrences: {controller.nan_count}")
         if controller.total_frames > 0:
@@ -431,13 +431,13 @@ def main():
             logger.info(f"   NaN rate: {nan_rate:.2f}%")
         logger.info(f"   Device used: {device}")
         logger.info("=" * 60)
-        
+
         cap.release()
         controller.sleep_cap.release()
         controller.scare_cap.release()
         cv2.destroyAllWindows()
-        logging.info("✅ Cleanup complete")
-        logging.info("📄 Diagnostics saved to: inference_diagnostics.log")
+        logging.info("Cleanup complete")
+        logging.info("Diagnostics saved to: inference_diagnostics.log")
 
 
 if __name__ == "__main__":
