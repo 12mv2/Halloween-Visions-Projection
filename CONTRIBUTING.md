@@ -1,94 +1,85 @@
-# Contributing to Halloween Hand Detection Projection System
+# Contributing
 
-Thank you for your interest in contributing! This project brings Halloween projections to life with real-time hand detection, and we welcome contributions from developers at all experience levels.
+Thank you for your interest in contributing to the Halloween Hand Detection Projection system.
 
-## Getting Started
+## Quick Setup
 
-### Quick Setup
-1. **Fork this repository** to your GitHub account
-2. **Clone your fork** locally:
+1. Fork this repository
+2. Clone your fork:
    ```bash
-   git clone https://github.com/your-username/Halloween-Visions.git
-   cd Halloween-Visions
-   python3 -m venv .venv && source .venv/bin/activate
+   git clone https://github.com/your-username/Halloween-Visions-Projection.git
+   cd Halloween-Visions-Projection
+   python3 -m venv venv && source venv/bin/activate
    pip install -r requirements.txt
    ```
 
-### Understanding the Project
-- **Core functionality**: YOLO hand detection triggers scare effects in VPT8 projection mapping
-- **Tech stack**: Python, OpenCV, YOLO, OSC, VPT8
-- **Target users**: Artists, makers, and Halloween enthusiasts
+## Project Overview
+
+- Core: YOLO hand detection triggers video projection
+- Stack: Python, OpenCV, YOLO, Ultralytics
+- Target: Halloween displays and interactive installations
 
 ## Development Workflow
 
-1. **Fork the repository** on GitHub
-2. **Clone your fork** locally
-3. **Create a feature branch** with a descriptive name:
-   ```bash
-   git checkout -b add-windows-documentation
-   git checkout -b fix-camera-detection
-   git checkout -b improve-error-messages
-   ```
-4. **Make your changes** following our coding standards
-5. **Test thoroughly** on your platform
-6. **Commit your changes** with clear messages
-7. **Push to your fork**: `git push origin your-branch-name`
-8. **Create a Pull Request** with:
-   - Clear title describing what you did
-   - Detailed description of changes made
-   - Any testing performed
-   - Screenshots if applicable (especially for documentation)
+1. Fork and clone
+2. Create feature branch: `git checkout -b feature-name`
+3. Make changes following code standards
+4. Test thoroughly
+5. Commit with clear messages
+6. Push: `git push origin feature-name`
+7. Create Pull Request with:
+   - Clear title and description
+   - Testing details
+   - Screenshots (if applicable)
 
 ## Good First Issues
 
-Check our [TODO.md](TODO.md) for tasks marked by priority. Here are some beginner-friendly areas:
+See [TODO.md](TODO.md) for prioritized tasks.
 
-**Documentation** (No coding required):
-- Capture VPT8 configuration screenshots
-- Write Windows setup documentation  
-- Create troubleshooting guides
+**Documentation** (no coding):
+- Setup screenshots
+- Windows/Linux setup guides
+- Troubleshooting guides
 
-**Testing & Verification**:
-- Test on different platforms (M1 Mac, Windows, Linux)
-- Verify camera compatibility with various USB cameras
-- Test VPT8 versions and document compatibility
+**Testing**:
+- Cross-platform verification (Windows, Linux)
+- Camera compatibility testing
+- Performance benchmarks
 
-**Code Improvements**:
-- Enhance error messages and user feedback
-- Add configuration file support
-- Improve camera auto-discovery
+**Code**:
+- Error message improvements
+- Configuration file support
+- Camera auto-discovery
 
-## Current TODOs
+## Current Priorities
 
-**🚨 HIGH PRIORITY**:
-- **Fix grey border at top of OpenCV display** (simple_projection.py)
-  - Issue: Small grey border appears at top of projection window on macOS
-  - Impact: Affects projector output quality for Halloween setup
-  - Attempted solutions: Aspect ratio changes, window sizing, letterboxing
-  - Need: Alternative display method or OpenCV configuration to eliminate grey area
+**High:**
+- Cross-platform testing
+- Performance optimization
+- Enhanced error handling
 
-**Medium Priority**:
-- Cross-platform testing (Windows/Linux)
-- Performance optimization for older hardware
-- Enhanced error handling and user feedback
+**Medium:**
+- Additional video formats
+- Audio integration
+- Multi-camera support
 
 ## Code Standards
 
-- **Python**: Follow PEP 8 styling
-- **Comments**: Document complex logic and hardware interactions
-- **Error handling**: Provide helpful error messages with next steps
-- **Testing**: Include tests for new functionality when possible
+- Python: Follow PEP 8
+- Comments: Document complex logic and hardware interactions
+- Error handling: Provide helpful messages with next steps
+- Testing: Include tests for new functionality
 
 ## Getting Help
 
-- **Questions**: Open a GitHub Discussion
-- **Bugs**: Create an issue with reproduction steps
-- **Feature requests**: Check TODO.md first, then open an issue
+- Questions: Open GitHub Discussion
+- Bugs: Create issue with reproduction steps
+- Features: Check TODO.md first, then open issue
 
 ## Recognition
 
-All contributors will be acknowledged in our README and release notes. First-time contributors receive special recognition for helping grow our community.
+Contributors acknowledged in README and release notes.
 
 ---
 
-Ready to contribute? Check out our [current TODO items](TODO.md) and find something that matches your interests and skills!
+See [TODO.md](TODO.md) for current tasks.
