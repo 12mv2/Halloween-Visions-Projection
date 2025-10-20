@@ -42,6 +42,8 @@ Note: Always activate venv before running: `source venv/bin/activate`
 
 ```bash
 python simple_projection.py --source 0 --conf 0.5
+# Default model: models/Colin1.pt
+# Alternative model: python simple_projection.py --model models/quinn_arms_up.pt
 ```
 
 Expected output:
@@ -96,7 +98,7 @@ python simple_projection.py --source 0 --conf 0.5 --fullscreen
 4. Display outputs to projector
 
 **Performance:**
-- Model: YOLOv8 nano classification (Colin1.pt)
+- Model: YOLOv8 nano classification (models/Colin1.pt)
 - Classes: {0: 'hand', 1: 'not_hand'}
 - Processing: 30+ FPS real-time
 - Scare duration: 2 seconds with debounce
@@ -187,9 +189,12 @@ Halloween-Visions-Projection/
 ├── simple_projection.py          # Main application
 ├── test_gpu_validation.py        # GPU validation utility
 ├── test_camera.py                # Camera testing
-├── Colin1.pt                     # Production model
-├── quinn_arms_up.pt              # Alternative model
+├── models/                       # YOLO model files
+│   ├── Colin1.pt                 # Production model (default)
+│   └── quinn_arms_up.pt          # Alternative model
 ├── videos/                       # Video assets
+│   ├── sleeping_face.mp4
+│   └── angry_face.mp4
 ├── envs/                         # Platform-specific environments
 │   └── xavier/                   # Xavier NX deployment files
 │       ├── README.md             # Xavier setup guide

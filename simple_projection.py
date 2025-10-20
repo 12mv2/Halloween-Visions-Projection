@@ -258,7 +258,7 @@ class SimpleProjectionController:
 
 def main():
     parser = argparse.ArgumentParser(description="Simple Halloween Hand Detection Projection")
-    parser.add_argument("--model", default="Colin1.pt", help="YOLO model file")
+    parser.add_argument("--model", default="models/Colin1.pt", help="YOLO model file")
     parser.add_argument("--source", default=0, help="Camera index")
     parser.add_argument("--video-sleep", default="videos/sleeping_face.mp4", help="Sleep video")
     parser.add_argument("--video-scare", default="videos/angry_face.mp4", help="Scare video")

@@ -18,7 +18,7 @@ cd Halloween-Visions-Projection
 bash envs/xavier/install.sh
 
 # Run application
-python3 simple_projection.py --model Colin1.pt
+python3 simple_projection.py
 ```
 
 ---
@@ -222,7 +222,7 @@ python3 simple_projection.py
 
 ```bash
 # Custom model and camera
-python3 simple_projection.py --model quinn_arms_up.pt --source 0
+python3 simple_projection.py --model models/quinn_arms_up.pt --source 0
 
 # Start in fullscreen mode
 python3 simple_projection.py --fullscreen
@@ -350,8 +350,9 @@ Halloween-Visions-Projection/
 ├── simple_projection.py          # Main application
 ├── test_gpu_validation.py        # GPU inference validation
 ├── test_camera.py                # Camera testing utility
-├── Colin1.pt                     # Production model
-├── quinn_arms_up.pt              # Alternative model
+├── models/                       # YOLO model files
+│   ├── Colin1.pt                 # Production model (default)
+│   └── quinn_arms_up.pt          # Alternative model
 ├── halloween.service             # Systemd service file
 ├── videos/                       # Video assets
 │   ├── sleeping_face.mp4
