@@ -21,7 +21,7 @@ WorkingDirectory=/home/colin/Documents/MLVisionsProjects/Halloween-Visions-Proje
 ExecStartPre=/bin/sleep 15
 
 # Main command - using venv python with validated parameters
-ExecStart=/home/colin/Documents/MLVisionsProjects/Halloween-Visions-Projection/venv/bin/python3 simple_projection.py --model Colin1.pt --video-sleep videos/sleeping_face.mp4 --video-scare videos/angry_face.mp4 --conf 0.7 --source 0 --fullscreen
+ExecStart=/home/colin/Documents/MLVisionsProjects/Halloween-Visions-Projection/venv/bin/python3 simple_projection.py --model models/Colin1.pt --video-sleep videos/sleeping_face.mp4 --video-scare videos/angry_face.mp4 --conf 0.7 --source 0 --fullscreen
 
 # Restart configuration
 Restart=on-failure

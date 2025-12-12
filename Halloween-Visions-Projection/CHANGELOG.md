@@ -1,10 +1,88 @@
 # Changelog
 
+## 2025-12-01: Repository Cleanup and Multi-Platform Support
+
+**Status:** Complete
+
+### Repository Cleanup
+Cleaned repository for sharing on denhac GitHub:
+
+**Deleted:**
+- Stray files: `bus.jpg`, `yolov8n.pt`, `inference_diagnostics.log`
+- Extra models: `best_final.pt`, `best_runpod.pt`, `colin_arms_up*.pt`, `colin_fetch.pt`, `colin_finger_fetch*.pt`
+- Redundant docs: `TODO.md`, `CONTRIBUTING.md`, `MAINTENANCE.md`
+- `runs/` directory (training artifacts)
+
+**Reorganized:**
+- Models moved to `models/` directory (Colin1.pt, quinn_arms_up.pt)
+- Venv backup moved to `envs/xavier/`
+
+### Multi-Platform Environment Structure
+Created platform-specific setup guides:
+
+- `envs/xavier/` - Xavier NX deployment (production)
+  - Full deployment guide with venv backup restoration
+  - Systemd service configuration
+  - Troubleshooting guide
+
+- `envs/linux/` - Ubuntu development
+  - SSH access instructions (Xavier IP: 10.11.3.65)
+  - File transfer commands (SCP/rsync)
+  - Development workflow
+
+### Documentation Updates
+- README.md rewritten for Xavier/Linux focus
+- Added denhac location info (front entrance, right side)
+- Removed Mac-specific references
+
+---
+
+## 2025-12-01: Memory Leak Fixes and Ultralytics Workaround
+
+**Status:** Verified working
+
+### Problem
+System was degrading from 30 FPS to ~0.05 FPS over 7 days of continuous operation (observed in inference_diagnostics.log from Nov 23-30).
+
+### Root Cause Analysis
+- GPU tensors (frame_tensor, output, probs) were not explicitly freed each frame
+- Python garbage collection was not keeping up with 30 allocations/second
+- FPS benchmark buffer retained 300 entries indefinitely after benchmark
+
+### Fixes Applied (simple_projection.py)
+1. **Line 624:** Added `del frame_tensor, output, probs` - explicit GPU memory cleanup each frame
+2. **Line 439:** Added `self.fps_buffer.clear()` - frees benchmark memory after completion
+3. **Line 510:** Added `model.model.to(device)` - moves inner PyTorch model to GPU
+
+### Ultralytics 8.0.196 Workaround
+- **Problem:** `model.to(device)` triggers training mode instead of inference
+- **Symptom:** Application starts training on imagenet10 dataset instead of running inference
+- **Evidence:** Output showed `engine/trainer: task=classify, mode=train`
+- **Solution:** Use `model.model.to(device)` instead of `model.to(device)`
+- **Explanation:** `model.model` is the inner PyTorch nn.Module; moving it directly bypasses Ultralytics' buggy `.to()` override
+
+### Documentation Added
+- Comprehensive docstrings and comments added to simple_projection.py
+- Module-level docstring with architecture overview, state machine, usage, and controls
+- Class and method docstrings with Args/Returns documentation
+- Inline comments explaining the main loop flow
+- Critical workaround documented in code comments
+
+### Technical Notes
+- Conservative fixes only - no new dependencies added (Xavier venv is fragile)
+- Avoided frequent `torch.cuda.empty_cache()` calls (causes 3-5s stalls per call)
+- Based on PyTorch best practices: explicit `del` + infrequent GC is preferred
+
+### Expected Improvement
+Stable FPS over extended operation periods (days/weeks).
+
+---
+
 ## 2025-09-22: Production Release - OpenCV Solution
 
 ### Final System (simple_projection.py)
 
-**Status:** Production Ready
+**Status:** Stable
 
 **Features:**
 - Hand detection: 50-99% confidence (trained YOLO classification model)

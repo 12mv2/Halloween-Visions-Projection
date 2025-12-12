@@ -1,79 +1,23 @@
-# Python
-.venv/
+# Python virtual environments
 venv/
+.venv/
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Media files (large) - except videos/ folder which uses Git LFS
-*.avi
-*.mov
-*.wmv
-*.flv
-*.webm
-*.mkv
-
-# Allow MP4 files in videos/ folder (tracked by Git LFS)
-!videos/*.mp4
-
-# Large images (but allow documentation images)
-*.tiff
-*.tif
-*.bmp
-
-# Allow documentation images
-!docs/images/*.png
-!docs/images/*.jpg
-!docs/images/*.gif
-
-# Model files (large) - Note: .pt files now tracked via Git LFS
-*.pth
-*.weights
-*.onnx
-
-# OS files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Large files
+*.tar.gz
 
 # IDE
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
 
 # Logs
 *.log
-logs/
 
-# Temporary files
-tmp/
-temp/
-.tmp/
+# OS
+.DS_Store
+Thumbs.db
 
-# Claude Code
+# Claude
 .claude/
-
-# Development files
