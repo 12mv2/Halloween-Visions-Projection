@@ -14,9 +14,9 @@ GAME FLOW:
 4. Object found: DemonPlayer plays outro
 5. Back to IDLE
 
-SUPPORTED CLASSES (exp_balanced model):
----------------------------------------
-- hand, hammer, 9v_battery, black_spool, green_spool, orange_ball, background
+SUPPORTED CLASSES (train7 model):
+---------------------------------
+- hand, hammer, 9v_battery, black_spool, green_spool, blue_floppy, background
 
 Controls:
     D - Toggle Debug/Projection mode
@@ -77,8 +77,7 @@ class QuestGame:
         "black_spool",
         "9v_battery",
         "hammer",
-        "orange_ball",
-        "orange2",
+        "blue_floppy",
     ]
 
     TIMEOUT_SECONDS = 300  # 5 minutes per object
@@ -123,7 +122,7 @@ class QuestGame:
 def main():
     """Main application entry point."""
     parser = argparse.ArgumentParser(description="Quest Multi-Class Object Detection")
-    parser.add_argument("--model", default="models/exp_balanced/weights/best.pt", help="YOLO model file")
+    parser.add_argument("--model", default="models/train7/weights/best.pt", help="YOLO model file")
     parser.add_argument("--source", default=0, help="Camera index")
     parser.add_argument("--conf", type=float, default=0.15, help="Detection confidence threshold")
     parser.add_argument("--fullscreen", action="store_true", help="Start in fullscreen mode")
@@ -224,22 +223,10 @@ def main():
             video_frame = cv2.resize(video_frame, (cam_w, cam_h))
 
             # --- INFERENCE ---
-            frame_rgb = cv2.cvtColor(camera_frame, cv2.COLOR_BGR2RGB)
-            frame_resized = cv2.resize(frame_rgb, (640, 640))
-            frame_tensor = torch.from_numpy(frame_resized).permute(2, 0, 1).float() / 255.0
-            frame_tensor = frame_tensor.unsqueeze(0).to(device)
-
-            with torch.no_grad():
-                output = model.model(frame_tensor)
-                logits = output[0] if isinstance(output, tuple) else output
-                probs = torch.nn.functional.softmax(logits, dim=1)
-
-            probs_np = probs.cpu().numpy().flatten()
-            max_idx = probs_np.argmax()
-            confidence = float(probs_np[max_idx])
-            class_name = model.names[int(max_idx)]
-
-            del frame_tensor, output, probs
+            results = model.predict(camera_frame, verbose=False)
+            probs = results[0].probs
+            class_name = model.names[probs.top1]
+            confidence = float(probs.top1conf)
 
             # --- GAME STATE MACHINE ---
             if game.state == "detector":
@@ -248,6 +235,10 @@ def main():
                     detector.charging = True
                 else:
                     detector.charging = False
+
+                # Debug: show charge status every 30 frames
+                if frame_count % 30 == 0:
+                    logging.info(f"[DEBUG] charge={detector.charge}, phase={detector.phase}, activate_complete={detector.activate_complete}")
 
                 # Check if detector completed activate phase
                 if detector.activate_complete:
