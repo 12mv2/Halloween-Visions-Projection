@@ -1,0 +1,7 @@
+9v_battery
+background
+black_spool
+blue_floppy
+green_spool
+hammer
+hand

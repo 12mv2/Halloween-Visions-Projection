@@ -1,0 +1,13 @@
+# QuestMitch dependencies
+# Most are shared with the main project
+
+opencv-python>=4.5.0
+numpy>=1.20.0
+
+# For ONNX inference (dev machine)
+onnxruntime>=1.10.0
+
+# For TensorRT inference (Xavier NX only)
+# These are pre-installed with JetPack:
+# - tensorrt
+# - pycuda

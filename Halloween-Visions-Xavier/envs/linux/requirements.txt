@@ -1,9 +1,0 @@
-# Ubuntu Linux Development Requirements
-# Python 3.8+
-
-ultralytics>=8.0.196
-opencv-python>=4.5.0
-
-# PyTorch - CPU version (works without NVIDIA GPU)
-# For GPU support, install separately:
-# pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
