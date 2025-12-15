@@ -67,12 +67,47 @@ Create a quick, simple educational game that teaches ML/computer vision concepts
 
 ## Existing Code Reference
 
+**Games (MLVisionsProjects-from-xavier):**
 ```
 games/SimpleHunt/game.py     - Score/timer template
 games/QuestDemon/            - Video overlay, state machine
+games/QuestDemon/mitchplayer/assets/  - Video assets (mp4)
 inference/onnx_infer.py      - Inference backend
 models/7class_v1/            - Trained model
 ```
+
+**Training Tools (finetune-workshop):**
+```
+capture_multiclass.py        - Capture training images via webcam
+build_multiclass_dataset.py  - Build dataset from captures
+live_demo.py                 - Test model with live camera
+docs/TECHNICAL_GUIDE.md      - Training deep-dive
+```
+
+## Full Educational Pipeline Idea
+
+Visitors could experience the FULL ML pipeline:
+
+```
+1. CAPTURE     →  2. TRAIN      →  3. PLAY
+   (webcam)        (show process)    (use model)
+
+"Take pictures    "Watch AI         "Now play a game
+ of objects"       learn"            with YOUR model"
+```
+
+### Assets Needed
+- [ ] Short video explaining "what is machine learning" (30-60 sec)
+- [ ] Video showing training process time-lapse
+- [ ] Simple capture UI for visitors
+- [ ] "Training in progress" animation/video
+- [ ] Victory/success video when model works
+
+### Two-Repo Consideration
+- Training tools are in `finetune-workshop`
+- Games are in `MLVisionsProjects-from-xavier`
+- May need to copy/adapt capture script for educational use
+- Or: run training demo on Ubuntu, game on Xavier
 
 ## Success Criteria
 
