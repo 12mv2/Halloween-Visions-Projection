@@ -1,0 +1,16 @@
+# MLVisionsProjects - Shared Dependencies
+# For Ubuntu dev machine. Xavier uses system packages.
+
+# Core ML
+ultralytics>=8.0.0
+torch>=2.0.0
+
+# Computer Vision
+opencv-python>=4.5.0
+numpy>=1.20.0
+
+# Inference backends
+onnxruntime>=1.15.0
+
+# Note: TensorRT/pycuda are pre-installed on Xavier via JetPack
+# Do not pip install these - they must match the system CUDA version
