@@ -1,4 +1,4 @@
-# Train The AI - Educational ML Experience with REAL Training
+# Train Classifier - Educational ML Experience with REAL Training
 
 An interactive game that teaches machine learning by **actually training a model** on visitor photos.
 
@@ -8,12 +8,12 @@ An interactive game that teaches machine learning by **actually training a model
 
 ```bash
 cd ~/MLVisions
-python3 games/TrainTheAI/game.py
+python3 games/TrainClassifier/game.py
 ```
 
 With different camera:
 ```bash
-python3 games/TrainTheAI/game.py --source 1
+python3 games/TrainClassifier/game.py --source 1
 ```
 
 ## Game Flow (~3-4 minutes total)
@@ -78,8 +78,8 @@ python3 games/TrainTheAI/game.py --source 1
 > This is called 'negative examples' - it's how AI learns the difference."
 
 ### During REAL training:
-> "This is ACTUALLY happening right now! The AI is adjusting
-> 3 million numbers called 'weights' to match your photos.
+> "This is ACTUALLY happening right now! The neural network is adjusting
+> 2.7 million numbers called 'weights' to match your photos.
 > That 'loss' number dropping means it's getting smarter!"
 
 ### During play:
@@ -100,15 +100,15 @@ python3 games/TrainTheAI/game.py --source 1
 - **5 epochs** - Quick training (~30-60 sec on Xavier GPU)
 - **~90 training images** - 50 object + 40 background frames
 - **Binary classification** - Their object class vs background class
-- **Model**: YOLOv8n-cls (~3M parameters, 224x224 input)
+- **Model**: YOLOv8n-cls (2.7M parameters, 224x224 input)
 - Training runs in background thread while UI shows progress
 - Educational slides explain: neural networks, weights, transfer learning, loss functions
 
 ## Files
 
 ```
-games/TrainTheAI/
-    game.py     - Main game (this file)
+games/TrainClassifier/
+    game.py     - Main game
     README.md   - This documentation
 ```
 
@@ -120,7 +120,7 @@ games/TrainTheAI/
 ls /dev/video*
 
 # Try different source
-python3 games/TrainTheAI/game.py --source 1
+python3 games/TrainClassifier/game.py --source 1
 ```
 
 **Model not found:**

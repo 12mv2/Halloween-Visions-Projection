@@ -24,4 +24,9 @@ Thumbs.db
 .claude/
 
 # Development
-.dev 
+.dev
+
+# YOLO training outputs
+runs/
+temp_training/
+*.cache
