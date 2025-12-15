@@ -30,3 +30,9 @@ Thumbs.db
 runs/
 temp_training/
 *.cache
+
+# Internal dev files
+HANDOFF.md
+CHANGELOG.md
+TICKET_*.md
+RESEARCH_*.md
