@@ -1,90 +1,134 @@
-# Project Handoff: Xavier ML Visions
+# Handoff: Xavier ML Visions Games
 
-## What Was Accomplished
+## Current State (2024-12-15)
 
-### 1. Train7 Model Integration (2024-12-14)
-Integrated a new 7-class YOLO classifier into QuestV3:
+**Phase 2 COMPLETE** - Repo restructured, both games tested locally.
 
-**Model Details:**
-- Path: `QuestV3/models/train7/weights/best.pt`
-- Classes: `hand`, `hammer`, `9v_battery`, `black_spool`, `green_spool`, `blue_floppy`, `background`
-- Accuracy: 99.4% validation
-- Size: ~3MB
-
-**Key Changes:**
-- Switched inference from manual tensor preprocessing to `model.predict()` API
-- Updated `QUEST_SEQUENCE` to use new classes (replaced orange_ball with blue_floppy)
-- Added display name mapping in demonplayer for "blue floppy disk"
-
-### 2. Git LFS Setup
-Configured git LFS for large files:
-- `*.mp4` - video assets
-- `*.pt` - model weights
-
-### 3. QuestV3 Game Working
-The object hunt game is fully functional:
-```bash
-cd ~/projects/MLVisionsProjects-from-xavier/QuestV3
-source venv/bin/activate
-python3 quest_projection.py
-```
-
-**Game Flow:**
-1. Show hand → charges up → triggers demon
-2. Demon asks for objects in sequence
-3. Find and show each object to camera
-4. Complete all 5 objects or timeout
-
-## Current Repository State
-
+### Repo Structure
 ```
 MLVisionsProjects-from-xavier/
-├── QuestV3/                 # Active - train7 integrated, working
-│   ├── quest_projection.py
-│   ├── mitchplayer/
-│   └── models/train7/
-├── MitchV2/                 # Legacy - original Halloween
-├── Halloween-Visions-XavierV1/  # Legacy - untracked
-└── TICKET_MultiGame_Platform.md  # Next task
+├── games/
+│   ├── QuestDemon/         # Mitch's demon game ✓ WORKING
+│   │   ├── quest_projection.py
+│   │   ├── mitchplayer/    # Video player + assets
+│   │   └── requirements.txt
+│   └── SimpleHunt/         # Template game ✓ WORKING
+│       ├── game.py
+│       └── requirements.txt
+├── models/
+│   └── 7class_v1/          # Production model
+│       ├── best.pt         # PyTorch
+│       ├── best.onnx       # ONNX (for inference/)
+│       └── classes.txt
+├── inference/              # Shared backends
+│   ├── onnx_infer.py       # ONNX Runtime
+│   └── tensorrt_infer.py   # TensorRT (Xavier)
+└── CHANGELOG.md
 ```
 
-**Git Remotes:**
-- `origin` → `12mv2/Halloween-Visions-Projection.git` (personal dev)
-- `denhac` → `Denhac/XavierMLVisions.git` (org deployment)
-
-**Latest Commit:** `ec3fd87` - feat(QuestV3): Integrate train7 model
-
-## What's Next
-
-See `TICKET_MultiGame_Platform.md` for the restructuring plan to make this a multi-game platform for denhac developers.
-
-## Key Files to Know
-
-| File | Purpose |
-|------|---------|
-| `QuestV3/quest_projection.py` | Main game entry point |
-| `QuestV3/mitchplayer/mitchplayer.py` | DetectorPlayer - handles charge/activate |
-| `QuestV3/mitchplayer/demonplayer.py` | DemonPlayer - handles demon dialog sequence |
-| `QuestV3/models/train7/weights/best.pt` | Trained 7-class model |
-| `finetune-workshop/` | Separate repo for model training |
-
-## Debug Tips
-
-- Press `D` in game for debug overlay
-- Press `T` to manually trigger demon (skip hand detection)
-- Press `N` to skip to next object
-- Debug logging shows `[DP]` for DetectorPlayer, `[DEBUG]` for charge state
-
-## Dependencies
-
-QuestV3 venv has:
-- Python 3.12
-- ultralytics (YOLO)
-- opencv-python
-- torch
-
-Note: Xavier has brittle dependencies - avoid updating packages.
+### Git Remotes
+- `origin` → github.com/12mv2/Halloween-Visions-Projection.git
+- `denhac` → github.com/Denhac/XavierMLVisions.git
 
 ---
 
-*Handoff Date: 2024-12-14*
+## REMAINING WORK
+
+### Phase 3: Xavier NX Deployment
+```bash
+# 1. Free disk space (target 6GB+)
+ssh xavier "sudo apt-get clean; sudo journalctl --vacuum-time=7d"
+ssh xavier "df -h"  # Verify space
+
+# 2. Copy ONNX to Xavier
+scp models/7class_v1/best.onnx xavier:~/
+scp models/7class_v1/classes.txt xavier:~/
+
+# 3. Convert to TensorRT on Xavier
+ssh xavier "/usr/src/tensorrt/bin/trtexec --onnx=~/best.onnx --fp16 --saveEngine=~/best.engine"
+
+# 4. Copy back engine file
+scp xavier:~/best.engine models/7class_v1/
+```
+
+### Phase 4: Test Games on Xavier
+```bash
+# Deploy repo to Xavier
+rsync -av --exclude='.git' --exclude='*.pyc' . xavier:~/MLVisions/
+
+# Test SimpleHunt with TensorRT
+ssh xavier "cd ~/MLVisions && python games/SimpleHunt/game.py --model models/7class_v1/best.engine"
+
+# Test QuestDemon (uses PyTorch directly)
+ssh xavier "cd ~/MLVisions/games/QuestDemon && python quest_projection.py --model ../../models/7class_v1/best.pt"
+```
+
+### Phase 5: Educational Game
+- Design and build in `games/Educational/`
+- Should teach ML concepts while playing
+
+### Phase 6: Push to Denhac
+```bash
+git push denhac main
+```
+
+### Phase 7: Cleanup finetune-workshop
+- Remove `games/` folder from finetune-workshop (now lives here)
+- Keep `models/` and `inference/` there for export testing
+
+---
+
+## How to Run Games Locally
+
+```bash
+# Use finetune-workshop venv (has all deps)
+cd /home/ubuntu24/projects/MLVisionsProjects-from-xavier
+
+# SimpleHunt (ONNX)
+/home/ubuntu24/projects/finetune-workshop/.venv/bin/python games/SimpleHunt/game.py
+
+# QuestDemon (PyTorch)
+cd games/QuestDemon
+/home/ubuntu24/projects/finetune-workshop/.venv/bin/python quest_projection.py --model ../../models/7class_v1/best.pt
+```
+
+**Controls:**
+- `D` - Debug overlay
+- `T` - Trigger demon (skip hand)
+- `N` - Next object
+- `Q` - Quit
+
+---
+
+## Xavier NX Environment
+| Component | Version |
+|-----------|---------|
+| JetPack   | 5.0.2   |
+| CUDA      | 11.4    |
+| TensorRT  | 8.4.1   |
+| Disk      | ~4GB free (need 6GB+) |
+
+---
+
+## Model Info
+- **Classes**: 9v_battery, background, black_spool, blue_floppy, green_spool, hammer, hand
+- **Architecture**: YOLOv8n-cls
+- **Input**: 224x224
+- **Accuracy**: 98.7% top-1
+
+---
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `games/QuestDemon/quest_projection.py` | Mitch's demon game |
+| `games/SimpleHunt/game.py` | Template scavenger hunt |
+| `inference/onnx_infer.py` | ONNX inference backend |
+| `inference/tensorrt_infer.py` | TensorRT backend (Xavier) |
+| `models/7class_v1/best.pt` | PyTorch model |
+| `models/7class_v1/best.onnx` | ONNX export |
+
+---
+
+*Last updated: 2024-12-15*
