@@ -2,7 +2,7 @@
 
 ## Current State (2024-12-15)
 
-**Phase 2 COMPLETE** - Repo restructured, both games tested locally on Ubuntu.
+**Phase 4 COMPLETE** - Both games working on Xavier NX!
 
 ---
 
@@ -25,19 +25,19 @@
 - [x] Delete old cruft (MitchV2, Halloween-Visions-XavierV1)
 - [x] Test both games work locally
 
-### Phase 3: Xavier NX Deployment ← START HERE
-1. Free disk space on Xavier (target 6GB+)
-2. Copy ONNX model to Xavier
-3. Convert to TensorRT engine on Xavier
-4. Test TensorRT inference on Xavier
+### Phase 3: Xavier NX Deployment ✓ DONE
+- [x] Free disk space on Xavier (8.2GB freed)
+- [x] Install PyTorch 1.13.0 (Nvidia Jetson wheel)
+- [x] Install ultralytics, onnxruntime-gpu, onnx
+- [x] Re-export ONNX on Xavier (opset 12) - **KEY: Export on Xavier, not training machine**
 
-### Phase 4: Test Games on Xavier
-1. Deploy restructured repo to Xavier
-2. Test QuestDemon with PyTorch model
-3. Test SimpleHunt with TensorRT engine
-4. Fix any Xavier-specific issues
+### Phase 4: Test Games on Xavier ✓ DONE
+- [x] Deploy repo via git clone from denhac
+- [x] Test QuestDemon with PyTorch model ✓ WORKING
+- [x] Test SimpleHunt with ONNX Runtime ✓ WORKING
+- [x] Backup working ML environment (1.1GB tarball)
 
-### Phase 5: Educational Game
+### Phase 5: Educational Game ← START HERE
 1. Design educational game concept
 2. Build in `games/Educational/`
 3. Should teach ML concepts while playing
@@ -204,6 +204,26 @@ denhac  https://github.com/Denhac/XavierMLVisions.git
    - Copy production models here
    - Build games using inference/ backends
    - Deploy to Xavier/denhac
+
+---
+
+## Xavier ML Environment Backup
+
+**Location:** `/home/ubuntu24/projects/MLVisionsProjects-from-xavier/xavier_ml_backup_20251215.tar.gz`
+
+**Contents:**
+- PyTorch 1.13.0 wheel (Nvidia Jetson)
+- Installed site-packages (torch, ultralytics, onnx, onnxruntime-gpu)
+- Package list (`xavier_working_packages_20251215.txt`)
+
+**To restore (if Xavier packages break):**
+```bash
+scp xavier_ml_backup_20251215.tar.gz xavier:~/
+ssh xavier "cd ~ && tar -xzvf xavier_ml_backup_20251215.tar.gz"
+```
+
+**Note:** This backup is NOT in git (too large). It's stored locally on the Ubuntu dev machine.
+See `RESEARCH_Xavier_Dependencies.md` for how to reinstall from scratch.
 
 ---
 
