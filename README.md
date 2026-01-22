@@ -27,7 +27,18 @@ python3 games/DemonQuest/quest_projection.py
 python3 games/SimpleHunt/game.py
 ```
 
-## Hardware
+## Development Setup
+
+```bash
+git clone https://github.com/Denhac/XavierMLVisions.git
+cd XavierMLVisions
+pip install -r requirements.txt
+python games/SimpleHunt/game.py
+```
+
+Tested on Linux, macOS (Intel/M1), and Windows.
+
+## Hardware (Xavier)
 
 - NVIDIA Jetson Xavier NX
 - USB webcam
