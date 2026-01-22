@@ -10,14 +10,34 @@ This is the foundational game template for denhac members to fork
 and customize with their own game mechanics.
 
 Usage:
-    python games/SimpleHunt/game.py --model models/7class_v1/best.onnx
-    python games/SimpleHunt/game.py --model models/7class_v1/best.engine  # Xavier
+    python games/SimpleHunt/game.py                                      # Auto-detects platform
+    python games/SimpleHunt/game.py --model models/7class_v1/best.onnx   # Explicit model
+    python games/SimpleHunt/game.py --model models/7class_v1/best.engine # TensorRT
 """
 import sys
+import os
 import time
 import random
 import argparse
+import platform
 from pathlib import Path
+
+
+def is_jetson() -> bool:
+    """Detect if running on NVIDIA Jetson (Xavier, Orin, etc.)."""
+    return os.path.exists("/etc/nv_tegra_release")
+
+
+def get_default_model_path() -> str:
+    """Select the correct ONNX model based on platform.
+
+    Returns best_xavier.onnx on Jetson (opset 12 for TensorRT 8.4),
+    best.onnx on all other platforms (Linux, Mac, Windows).
+    """
+    if is_jetson():
+        return "models/7class_v1/best_xavier.onnx"
+    else:
+        return "models/7class_v1/best.onnx"
 
 import cv2
 import numpy as np
@@ -183,8 +203,8 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="models/7class_v1/best.onnx",
-        help="Path to model file",
+        default=None,
+        help="Path to model file (auto-detects platform if not specified)",
     )
     parser.add_argument("--source", type=int, default=0, help="Camera index")
     parser.add_argument(
@@ -198,10 +218,14 @@ def main():
     )
     args = parser.parse_args()
 
+    # Auto-detect model path if not specified
+    model_path = args.model if args.model else get_default_model_path()
+
     # Initialize game
-    print(f"Loading model: {args.model}")
+    print(f"Platform: {platform.machine()} (Jetson: {is_jetson()})")
+    print(f"Loading model: {model_path}")
     game = QuestMitch(
-        args.model,
+        model_path,
         conf_threshold=args.conf,
         hold_time=args.hold,
         game_duration=args.duration,
