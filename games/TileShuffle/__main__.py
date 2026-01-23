@@ -30,7 +30,7 @@ from inference.onnx_infer import YOLOClassifier
 MODEL_PATH = PROJECT_ROOT / "models" / "7class_v1" / "best_xavier.onnx"
 
 # Camera settings
-CAMERA_INDEX = 0
+CAMERA_INDEX = 1
 CAMERA_WIDTH = 640
 CAMERA_HEIGHT = 480
 
