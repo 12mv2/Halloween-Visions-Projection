@@ -514,14 +514,15 @@ class Launcher:
         if not self.camera.start():
             print("Warning: Running without camera")
 
-        # Load model with CPU only to avoid CUDA deadlock
+        # Load model - try TensorRT first (best for Xavier), then CUDA, then CPU
         if MODEL_PATH.exists():
             print(f"Loading model: {MODEL_PATH}")
-            print("Using CPU provider (safer)")
+            # TensorRT is optimized for Xavier and shouldn't deadlock like raw CUDA
             self.classifier = YOLOClassifier(
                 str(MODEL_PATH),
-                providers=["CPUExecutionProvider"]
+                providers=["TensorrtExecutionProvider", "CUDAExecutionProvider", "CPUExecutionProvider"]
             )
+            print(f"Using providers: {self.classifier.session.get_providers()}")
             print(f"Classes: {self.classifier.classes}")
         else:
             print(f"Warning: Model not found at {MODEL_PATH}")
