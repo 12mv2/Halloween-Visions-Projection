@@ -514,10 +514,14 @@ class Launcher:
         if not self.camera.start():
             print("Warning: Running without camera")
 
-        # Load model
+        # Load model with CPU only to avoid CUDA deadlock
         if MODEL_PATH.exists():
             print(f"Loading model: {MODEL_PATH}")
-            self.classifier = YOLOClassifier(str(MODEL_PATH))
+            print("Using CPU provider (safer)")
+            self.classifier = YOLOClassifier(
+                str(MODEL_PATH),
+                providers=["CPUExecutionProvider"]
+            )
             print(f"Classes: {self.classifier.classes}")
         else:
             print(f"Warning: Model not found at {MODEL_PATH}")
