@@ -605,13 +605,22 @@ class Launcher:
         game = GAME_MAPPINGS[self.selected_game]
         print(f"Launching: {game['name']}")
 
+        # Release camera so game can use it
+        print("Releasing camera for game...")
+        self.camera.stop()
+
         try:
             # Run game as subprocess (blocks until game exits)
             subprocess.run(game["command"], cwd=str(PROJECT_ROOT))
         except Exception as e:
             print(f"Error launching game: {e}")
 
-        print("Game exited - returning to idle")
+        print("Game exited - restarting camera...")
+        # Restart camera after game exits
+        self.camera = CameraThread(CAMERA_INDEX, CAMERA_WIDTH, CAMERA_HEIGHT)
+        self.camera.start()
+
+        print("Returning to idle")
 
     def render(self):
         """Render current frame based on state."""
