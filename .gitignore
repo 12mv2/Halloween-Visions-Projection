@@ -31,8 +31,13 @@ runs/
 temp_training/
 *.cache
 
+# Model weights (download separately)
+*.pt
+*.pth
+
 # Internal dev files
 HANDOFF.md
 CHANGELOG.md
 TICKET_*.md
 RESEARCH_*.md
+local/
