@@ -1,10 +1,10 @@
-# MITCH 2025
+# MITCH 2025 - Modified for launcher
 
 # System Modules
 from pathlib import Path
 
-
-ASSETS_DIR = Path("assets")
+# Use absolute path relative to this file's location
+ASSETS_DIR = Path(__file__).resolve().parent / "assets"
 
 DISPLAY_RES = (1280, 1024)
 
