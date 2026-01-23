@@ -29,12 +29,19 @@ Controls:
 import argparse
 import logging
 import time
+from pathlib import Path
+
 import cv2
 import torch
 from ultralytics import YOLO
 
 from mitchplayer.mitchplayer import DetectorPlayer
 from mitchplayer.demonplayer import DemonPlayer
+
+# Compute absolute model path from script location
+SCRIPT_DIR = Path(__file__).parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent
+DEFAULT_MODEL = str(PROJECT_ROOT / "models" / "7class_v1" / "best.pt")
 
 
 # =============================================================================
@@ -122,7 +129,7 @@ class QuestGame:
 def main():
     """Main application entry point."""
     parser = argparse.ArgumentParser(description="Quest Multi-Class Object Detection")
-    parser.add_argument("--model", default="../../models/7class_v1/best.pt", help="YOLO model file")
+    parser.add_argument("--model", default=DEFAULT_MODEL, help="YOLO model file")
     parser.add_argument("--source", default=0, help="Camera index")
     parser.add_argument("--conf", type=float, default=0.15, help="Detection confidence threshold")
     parser.add_argument("--fullscreen", action="store_true", help="Start in fullscreen mode")

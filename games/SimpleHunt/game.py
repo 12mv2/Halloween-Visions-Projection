@@ -23,6 +23,14 @@ import platform
 from pathlib import Path
 
 
+# Add project root to path for imports
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+import cv2
+import numpy as np
+
+
 def is_jetson() -> bool:
     """Detect if running on NVIDIA Jetson (Xavier, Orin, etc.)."""
     return os.path.exists("/etc/nv_tegra_release")
@@ -35,16 +43,9 @@ def get_default_model_path() -> str:
     best.onnx on all other platforms (Linux, Mac, Windows).
     """
     if is_jetson():
-        return "models/7class_v1/best_xavier.onnx"
+        return str(PROJECT_ROOT / "models" / "7class_v1" / "best_xavier.onnx")
     else:
-        return "models/7class_v1/best.onnx"
-
-import cv2
-import numpy as np
-
-# Add project root to path for imports
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+        return str(PROJECT_ROOT / "models" / "7class_v1" / "best.onnx")
 
 # Import inference backend based on model type
 def load_classifier(model_path: str):
